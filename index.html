@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Atividade Prática - Eventos</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		form {width: 220px;border: solid 1px #000;padding: 10px;margin: 0 auto;}
+		button.new {padding: 5px 10px;}
+		input[type="text"],input[type="checkbox"]{padding: 5px 10px;border: 1px solid #e3e3e3;border-radius: 5px;}
+		ul#done {list-style: none;}
+		span {font-family: arial;color: red;}
+	</style>
+</head>
+<body>
+	<form>
+		<h2>Lista de tarefas</h2>
+		<input type="text" name="addTask">
+		<button class="new" onclick="chama(assigment)">Novo</button>
+		<h3>A fazer:</h3>
+		<div id="toDo">
+			<input type="checkbox" name="assigment[]"/> <label for="assigment[]">Tafera 1</label>
+			<input type="checkbox" name="assigment[]"/> <label for="assigment[]">Tafera 3</label>
+		</div>
+		<h3>Feito:</h3>
+		<ul id="done">
+			<li>Tarefa 2 <span>X</span></li>
+		</ul>
+	</form>
+	<script type="text/javascript">
+		//button.addEventListener("click", (function (){alert(assigment)}));
+
+		let button = document.querySelector(".new");
+		const toDo = document.getElementById("toDo");
+		let txtAssigment = document.getElementsByName("addTask")[0].value;
+
+		let txtElem = document.createTextNode(txtAssigment);
+		let elem = document.createElement("")
+		toDo.
+	</script>
+</body>
+</html>
