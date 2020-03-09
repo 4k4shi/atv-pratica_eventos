@@ -7,35 +7,91 @@
 		form {width: 220px;border: solid 1px #000;padding: 10px;margin: 0 auto;}
 		button.new {padding: 5px 10px;}
 		input[type="text"],input[type="checkbox"]{padding: 5px 10px;border: 1px solid #e3e3e3;border-radius: 5px;}
-		ul#done {list-style: none;}
-		span {font-family: arial;color: red;}
+		li {margin: 5px 0px}
+		ul {list-style: none;}
+		span {font-family: arial;color: red;border: dashed red 1px;padding:  1px 4px;border-radius: 3px;cursor: pointer;}		
 	</style>
 </head>
 <body>
 	<form>
 		<h2>Lista de tarefas</h2>
 		<input type="text" name="addTask">
-		<button class="new" onclick="chama(assigment)">Novo</button>
+		<button class="new">Novo</button>
 		<h3>A fazer:</h3>
-		<div id="toDo">
-			<input type="checkbox" name="assigment[]"/> <label for="assigment[]">Tafera 1</label>
-			<input type="checkbox" name="assigment[]"/> <label for="assigment[]">Tafera 3</label>
-		</div>
+		<ul id="toDo">
+			<li>
+				<input type="checkbox" name="assigment[]"/> <label for="assigment[]">Tafera 1</label>
+			</li>
+			<li>
+				<input type="checkbox" name="assigment[]"/> <label for="assigment[]">Tafera 3</label>
+			</li>
+		</ul>
 		<h3>Feito:</h3>
 		<ul id="done">
 			<li>Tarefa 2 <span>X</span></li>
 		</ul>
 	</form>
 	<script type="text/javascript">
-		//button.addEventListener("click", (function (){alert(assigment)}));
 
-		let button = document.querySelector(".new");
-		const toDo = document.getElementById("toDo");
-		let txtAssigment = document.getElementsByName("addTask")[0].value;
+		let abstraindo = function (e) {
+			const toDo = document.getElementById("toDo");
+			let txtAssigment = document.getElementsByName("addTask")[0].value;
 
-		let txtElem = document.createTextNode(txtAssigment);
-		let elem = document.createElement("")
-		toDo.
+			let textElem = document.createTextNode(txtAssigment);
+			let li = document.createElement("li");
+			let check = document.createElement("input");
+			let text = document.createElement("label");
+
+			if(e.cancelable){
+				e.preventDefault();
+				toDo.append(li);
+				li.append(check);
+				check.type = "checkbox";
+				li.append(" ",text);
+				text.append(textElem);
+			}
+		}
+
+		//Inserir
+		let insert = document.querySelector(".new");		
+		insert.addEventListener("click",abstraindo);
+
+
+		//mover
+		let moved = document.querySelectorAll("input");
+		for(let i = 0;i < moved.length;i++){
+			if(moved[i].type === "checkbox"){
+				let elemento = document.querySelectorAll("input")[i].parentNode;
+				let movendo = function (e) {
+					const done = document.getElementById("done");
+					let li = document.createElement("li");
+					let span = document.createElement("span");
+					let textoSpan = document.createTextNode("X");
+					document.querySelectorAll("input")[i].parentNode.style = "display:none";
+					if(e.cancelable){						
+						done.append(li);
+						li.append(elemento.innerText);
+						li.append(" ",span);
+						span.append(textoSpan);
+						e.preventDefault();
+					}			
+				}
+				moved[i].addEventListener("click",movendo);
+			}
+		}
+
+		//excluir
+		let delet = document.querySelectorAll("span");
+		for(let i = 0;i < delet.length;i++){
+			let elemento = document.querySelectorAll("span")[i].parentNode;
+			let deletando = function (e) {
+				if(e.cancelable){						
+					elemento.style = "display:none";
+				}			
+			}
+			elemento.addEventListener("click",deletando);
+		}
+		
 	</script>
 </body>
 </html>
