@@ -4,7 +4,8 @@
 	<title>Atividade Prática - Eventos</title>
 	<meta charset="utf-8">
 	<style type="text/css">
-		form {width: 220px;border: solid 1px #000;padding: 10px;margin: 0 auto;}
+		body {background: rgba(10,10,10,.8);}
+		form {width: 250px;border: solid 1px #000;padding: 10px;margin: 0 auto;border-radius: 8px;background: #a3a3a3;box-shadow: 4px 5px 20px black;font-family: sans-serif;}
 		button.new {padding: 5px 10px;}
 		input[type="text"],input[type="checkbox"]{padding: 5px 10px;border: 1px solid #e3e3e3;border-radius: 5px;}
 		li {margin: 5px 0px}
@@ -19,79 +20,65 @@
 		<button class="new">Novo</button>
 		<h3>A fazer:</h3>
 		<ul id="toDo">
-			<li>
-				<input type="checkbox" name="assigment[]"/> <label for="assigment[]">Tafera 1</label>
-			</li>
-			<li>
-				<input type="checkbox" name="assigment[]"/> <label for="assigment[]">Tafera 3</label>
-			</li>
 		</ul>
 		<h3>Feito:</h3>
 		<ul id="done">
-			<li>Tarefa 2 <span>X</span></li>
 		</ul>
 	</form>
 	<script type="text/javascript">
+		let inputs = document.querySelectorAll("input");
+		let spans = document.querySelectorAll("span");
+		
+		//Insirir no item a fazer
+		let inserir = function(e){
+			let texto = document.createTextNode(document.getElementsByName("addTask")[0].value);
+			const li = document.createElement("li");
+			const caixa_marcacao =  document.createElement("input");
+			const caixa_texto =  document.createElement("label");
 
-		let abstraindo = function (e) {
-			const toDo = document.getElementById("toDo");
-			let txtAssigment = document.getElementsByName("addTask")[0].value;
+			caixa_marcacao.type = "checkbox";
+			caixa_marcacao.name = "assigment[]";
 
-			let textElem = document.createTextNode(txtAssigment);
-			let li = document.createElement("li");
-			let check = document.createElement("input");
-			let text = document.createElement("label");
+			if(e.cancelable){				
+				document.getElementById("toDo").append(li);
+				li.append(caixa_marcacao);
+				li.append(caixa_texto);
+				caixa_texto.append(texto);
 
-			if(e.cancelable){
 				e.preventDefault();
-				toDo.append(li);
-				li.append(check);
-				check.type = "checkbox";
-				li.append(" ",text);
-				text.append(textElem);
+				caixa_marcacao.addEventListener("click", mover(caixa_marcacao,texto));
+
 			}
+				
 		}
+		document.getElementsByClassName("new")[0].addEventListener("click", inserir);
 
-		//Inserir
-		let insert = document.querySelector(".new");		
-		insert.addEventListener("click",abstraindo);
+		function mover(caixa,texto){
+			let movendo = function(){
+				// document.body.style = "background: lime";
+				const done = document.getElementById("done");
+				let li = document.createElement("li");
+				let span = document.createElement("span");
+				let textoSpan = document.createTextNode("x");
 
+				caixa.parentNode.remove();
 
-		//mover
-		let moved = document.querySelectorAll("input");
-		for(let i = 0;i < moved.length;i++){
-			if(moved[i].type === "checkbox"){
-				let elemento = document.querySelectorAll("input")[i].parentNode;
-				let movendo = function (e) {
-					const done = document.getElementById("done");
-					let li = document.createElement("li");
-					let span = document.createElement("span");
-					let textoSpan = document.createTextNode("X");
-					document.querySelectorAll("input")[i].parentNode.style = "display:none";
-					if(e.cancelable){						
-						done.append(li);
-						li.append(elemento.innerText);
-						li.append(" ",span);
-						span.append(textoSpan);
-						e.preventDefault();
-					}			
-				}
-				moved[i].addEventListener("click",movendo);
+				done.append(li);
+				li.append(texto);
+				li.append(" ",span);
+				span.append(textoSpan);
+
+				span.addEventListener("click",excluir(span));
 			}
-		}
-
-		//excluir
-		let delet = document.querySelectorAll("span");
-		for(let i = 0;i < delet.length;i++){
-			let elemento = document.querySelectorAll("span")[i].parentNode;
-			let deletando = function (e) {
-				if(e.cancelable){						
-					elemento.style = "display:none";
-				}			
-			}
-			elemento.addEventListener("click",deletando);
+			caixa.addEventListener("click",movendo);
 		}
 		
+		function excluir(elem){
+			let excluindo = function(){
+				elem.parentNode.remove();
+			}
+			elem.addEventListener("click",excluindo);
+		}
 	</script>
 </body>
 </html>
